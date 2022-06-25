@@ -7,6 +7,7 @@ class GameBoard
     @board = Array.new(size) { Array.new(size) }
   end
 
+  # Takes start array and finish array ([row, col]) and prints the shortest path between the two
   def knight_moves(start, finish)
     moves = shortest_path(start, finish)
     if moves.nil?
@@ -17,10 +18,11 @@ class GameBoard
     end
   end
 
-  def shortest_path(start, finish)
+  # Takes start array and finish array ([row, col]) and returns array of shortest path or nil
+  def shortest_path(start, finish, piece = Knight)
     return nil if out_of_bounds?(start) || out_of_bounds?(finish)
 
-    knight = Knight.new(start, self)
+    knight = piece.new(start, self)
     queue = [{ position: start, path: [start] }]
     visited = []
 
@@ -40,7 +42,7 @@ class GameBoard
     nil
   end
 
-  # Takes array of coordinates [row, col] and returns bool if position in board limits
+  # Takes array of coordinates [row, col] and returns true if position out of board limits
   def out_of_bounds?(coordinates)
     limit = board.size - 1
     row = coordinates[0]

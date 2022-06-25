@@ -19,6 +19,7 @@ class Knight
 
   private
 
+  # Array of how knight moves around 2D array grid
   def knight_movement
     [
       [-1, -2],
