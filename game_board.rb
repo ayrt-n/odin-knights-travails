@@ -51,7 +51,3 @@ class GameBoard
     row > limit || col > limit || row.negative? || col.negative?
   end
 end
-
-board = GameBoard.new(8)
-board.knight_moves([3,3], [0,0])
-
