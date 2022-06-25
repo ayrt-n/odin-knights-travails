@@ -7,9 +7,20 @@ class GameBoard
     @board = Array.new(size) { Array.new(size) }
   end
 
-  def shortest_path(start, finish, piece = Knight)
+  def knight_moves(start, finish)
+    moves = shortest_path(start, finish)
+    if moves.nil?
+      puts 'Could not find path'
+    else
+      puts "You made it in #{moves.size} move(s)! Here's your path:"
+      moves.each { |move| p move }
+    end
+  end
+
+  def shortest_path(start, finish)
     return nil if out_of_bounds?(start) || out_of_bounds?(finish)
 
+    knight = Knight.new(start, self)
     queue = [{ position: start, path: [start] }]
     visited = []
 
@@ -19,8 +30,9 @@ class GameBoard
       return current[:path] if current[:position] == finish
 
       visited << current[:position]
-      knight = piece.new(current[:position], self)
-      knight.moves.each do |move|
+      knight.position = current[:position] # Update position of the knight
+      knight.calculate_possible_moves(self) # Recalculate possible moves for new position
+      knight.moves.each do |move| # Add each possible move and the path to the queue
         queue << { position: move, path: current[:path] + [move] }
       end
     end
@@ -39,5 +51,5 @@ class GameBoard
 end
 
 board = GameBoard.new(8)
-p board.shortest_path([3,3], [0,0])
+board.knight_moves([3,3], [0,0])
 
